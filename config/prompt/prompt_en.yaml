@@ -1,0 +1,11 @@
+instruction: |
+  Please try to answer the following multiple-choice questions about Chinese culture based on the provided pictures. Answer the correct option directly without including additional explanations. Please use the following format: "Answer: $LETTER", where $LETTER is the letter of the option you think is correct.
+
+prompt_format: 
+  - |
+    Question: {}
+    (A) {}
+    (B) {}
+    (C) {}
+    (D) {}
+    Answer:

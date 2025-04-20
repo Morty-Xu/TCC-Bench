@@ -1,0 +1,2 @@
+image_root: "data/images"
+data_path: "data/VQA.csv"
