@@ -160,9 +160,6 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Calculate accuracy.")
-    parser.add_argument('--model_name', type=str, default='yi-vl-6b-chat', help='Model name to use')
-    # parser.add_argument('--split', type=str, default='test', help='Data split to use')
-    # parser.add_argument('--mode', nargs='+', default=['none', 'cot', 'domain', 'emotion', 'rhetoric', '1-shot', '2-shot', '3-shot'], help='Modes to use for data loading, separated by space')
     parser.add_argument('--output_dir', type=str, default='results_tcc', help='Directory to read result files from')
     parser.add_argument('--save_dir', type=str, default='results_statistic_tcc', help='Directory to save result files with category')
     
