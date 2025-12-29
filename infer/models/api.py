@@ -44,7 +44,7 @@ def request_with_interleave_content(interleave_content, base_url="", api_key="",
             else:
                 print(f"Failed to obtain the 'choices' field in the {retry_count + 1}th request. Retrying...")
         except requests.RequestException as e:
-            print(response.json())
+            # print(response.json())
             print(f"An error occurred during the request: {e}")
         except ValueError as e:
             print(f"The response content is not in valid JSON format: {e}")

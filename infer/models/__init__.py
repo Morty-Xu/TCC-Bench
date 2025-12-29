@@ -63,95 +63,125 @@ model_registry = ModelRegistry()
 
 # Configuration of models
 model_configs = {
+    'gpt-4.1': {
+        'load': ('.api', 'load_model'),
+        'infer': ('.api', 'infer'),
+        'model_path_or_name': 'GPT-4.1',
+        'base_url': "",
+        'api_key': '',
+        'model': 'gpt-4.1-2025-04-14',
+        'call_type': 'api'
+    },
     'gpt4o': {
         'load': ('.api', 'load_model'),
         'infer': ('.api', 'infer'),
         'model_path_or_name': 'GPT4o',
         'base_url': "",
         'api_key': '',
-        'model': 'gpt-4o',
+        'model': 'gpt-4o-2024-08-06',
         'call_type': 'api'
     },
-    'claude-3-7-sonnet': {
+    'gemini-2.5-flash': {
         'load': ('.api', 'load_model'),
         'infer': ('.api', 'infer'),
-        'model_path_or_name': 'claude-3-5-sonnet',
+        'model_path_or_name': 'gemini-2.5-flash',
         'base_url': "",
         'api_key': '',
-        'model': 'claude-3-7-sonnet-latest',
+        'model': 'gemini-2.5-flash',
         'call_type': 'api'
     },
-    'gemini-2.0-flash': {
+    'gemini-2.5-pro': {
         'load': ('.api', 'load_model'),
         'infer': ('.api', 'infer'),
-        'model_path_or_name': 'gemini-2.0-flash',
+        'model_path_or_name': 'gemini-2.5-pro',
         'base_url': "",
         'api_key': '',
-        'model': 'gemini-2.0-flash',
+        'model': 'gemini-2.5-pro',
         'call_type': 'api'
-    },
-    'Qwen2-VL-7B': {
-        'load': ('.lmdeploy_chat', 'load_model'),
-        'infer': ('.lmdeploy_chat', 'infer'),
-        'model_path_or_name': '',
-        'call_type': 'local',
-        'tp': 1
-    },
-    'Qwen2-VL-72B': {
-        'load': ('.lmdeploy_chat', 'load_model'),
-        'infer': ('.lmdeploy_chat', 'infer'),
-        'model_path_or_name': '',
-        'call_type': 'local',
-        'tp': 4
-    },
-    'glm-4v-9B': {
-        'load': ('.lmdeploy_chat', 'load_model'),
-        'infer': ('.lmdeploy_chat', 'infer'),
-        'model_path_or_name': '',
-        'call_type': 'local',
-        'tp': 1
     },
     'llava-v1.6-7b': {
         'load': ('.lmdeploy_chat', 'load_model'),
         'infer': ('.lmdeploy_chat', 'infer'),
-        'model_path_or_name': '',
+        'model_path_or_name': 'liuhaotian/llava-v1.6-vicuna-7b',
         'call_type': 'local',
         'tp': 1
     },
     'llava-v1.6-34b': {
         'load': ('.lmdeploy_chat', 'load_model'),
         'infer': ('.lmdeploy_chat', 'infer'),
-        'model_path_or_name': '',
+        'model_path_or_name': 'liuhaotian/llava-v1.6-34b',
+        'call_type': 'local',
+        'tp': 2
+    },
+    'Qwen2.5-VL-7B': {
+        'load': ('.lmdeploy_chat', 'load_model'),
+        'infer': ('.lmdeploy_chat', 'infer'),
+        'model_path_or_name': 'Qwen/Qwen2.5-VL-7B-Instruct',
+        'call_type': 'local',
+        'tp': 1
+    },
+    'Qwen2.5-VL-32B': {
+        'load': ('.lmdeploy_chat', 'load_model'),
+        'infer': ('.lmdeploy_chat', 'infer'),
+        'model_path_or_name': 'Qwen/Qwen2.5-VL-32B-Instruct',
+        'call_type': 'local',
+        'tp': 2
+    },
+    'Qwen2.5-VL-72B': {
+        'load': ('.lmdeploy_chat', 'load_model'),
+        'infer': ('.lmdeploy_chat', 'infer'),
+        'model_path_or_name': 'Qwen/Qwen2.5-VL-72B-Instruct',
+        'call_type': 'local',
+        'tp': 4
+    },
+    'glm-4v-9B': {
+        'load': ('.lmdeploy_chat', 'load_model'),
+        'infer': ('.lmdeploy_chat', 'infer'),
+        'model_path_or_name': 'zai-org/glm-4v-9b',
         'call_type': 'local',
         'tp': 1
     },
     'cogvlm2-19B': {
         'load': ('.lmdeploy_chat', 'load_model'),
         'infer': ('.lmdeploy_chat', 'infer'),
-        'model_path_or_name': '',
+        'model_path_or_name': 'zai-org/cogvlm2-llama3-chat-19B',
         'call_type': 'local',
         'tp': 1
     },
-    'InternVL2.5-8B': {
+    'InternVL3.5-8B': {
         'load': ('.lmdeploy_chat', 'load_model'),
         'infer': ('.lmdeploy_chat', 'infer'),
-        'model_path_or_name': '',
+        'model_path_or_name': 'OpenGVLab/InternVL3_5-8B',
         'call_type': 'local',
         'tp': 1
     },
-    'InternVL2.5-78B': {
+    'InternVL3.5-38B': {
         'load': ('.lmdeploy_chat', 'load_model'),
         'infer': ('.lmdeploy_chat', 'infer'),
-        'model_path_or_name': '',
+        'model_path_or_name': 'OpenGVLab/InternVL3_5-38B',
         'call_type': 'local',
-        'tp': 4
+        'tp': 2
     },
-    'DeepSeek-VL-7B': {
+    'DeepSeek-VL2-3B': {
         'load': ('.lmdeploy_chat', 'load_model'),
         'infer': ('.lmdeploy_chat', 'infer'),
-        'model_path_or_name': '',
+        'model_path_or_name': 'deepseek-ai/deepseek-vl2-tiny',
         'call_type': 'local',
         'tp': 1
+    },
+    'DeepSeek-VL-16B': {
+        'load': ('.lmdeploy_chat', 'load_model'),
+        'infer': ('.lmdeploy_chat', 'infer'),
+        'model_path_or_name': 'deepseek-ai/deepseek-vl2-small',
+        'call_type': 'local',
+        'tp': 1
+    },
+    'DeepSeek-VL-27B': {
+        'load': ('.lmdeploy_chat', 'load_model'),
+        'infer': ('.lmdeploy_chat', 'infer'),
+        'model_path_or_name': 'deepseek-ai/deepseek-vl2',
+        'call_type': 'local',
+        'tp': 2
     }
 }
 

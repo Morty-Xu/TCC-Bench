@@ -27,9 +27,9 @@ def check_completed(output_file):
                 else:
                     no_response_id.append(config_wrapper.get_id(data))
     except FileNotFoundError:
-        pass  # 文件未找到时忽略
+        pass  
     except json.JSONDecodeError:
-        pass  # JSON 解码错误时忽略
+        pass  
     return completed, no_response_id
 
 def infer_batch(model_components, model_name, batch, text_only):
@@ -59,11 +59,13 @@ def infer_batch(model_components, model_name, batch, text_only):
     #         results.append(sample)
     return results
 
-def main(model_name='gpt4o', prompt_template='prompt_zh.yaml', text_only=False, few_shot=None, output_dir='results', infer_limit=None, num_workers=1, batch_size=4, use_accel=False):
+def main(model_name='gpt4o', prompt_template='prompt_zh.yaml', text_only=False, few_shot=None, domain_aware=False, output_dir='results', infer_limit=None, num_workers=1, batch_size=4, use_accel=False):
     print('-'*100)
     print("[INFO] model_name:", model_name)
     print("[INFO] prompt_template:", prompt_template)
     print("[INFO] text_only:", text_only)
+    print("[INFO] few_shot:", few_shot)
+    print("[INFO] domain_aware:", domain_aware)
     print("[INFO] output_dir:", output_dir)
     print("[INFO] Infer Limit:", "No limit" if infer_limit is None else infer_limit)
     print("[INFO] Number of Workers:", num_workers)
@@ -81,6 +83,9 @@ def main(model_name='gpt4o', prompt_template='prompt_zh.yaml', text_only=False, 
     
     if few_shot:
         model_file_name += f"-{str(few_shot)}"
+    
+    if domain_aware:
+        model_file_name += f"-domain_aware"
 
     output_file_path = f'{output_dir}/{model_file_name}_{prompt_template}.jsonl'
     temp_output_file_path = f'{output_file_path}.tmp'
@@ -97,7 +102,7 @@ def main(model_name='gpt4o', prompt_template='prompt_zh.yaml', text_only=False, 
         with ThreadPoolExecutor(max_workers=num_workers) as executor:
             futures = []
             batch = []
-            for prompt, sample in tqdm(load_data(prompt_template=prompt_template, file_path='file_path.yaml', few_shot=few_shot)):
+            for prompt, sample in tqdm(load_data(prompt_template=prompt_template, file_path='file_path.yaml', few_shot=few_shot, domain_aware=domain_aware)):
                 sample[config_wrapper.get('prompt_key')] = prompt
                 if config_wrapper.get_id(sample) in merged:
                     
@@ -146,6 +151,7 @@ if __name__ == '__main__':
     # parser.add_argument('--mode', nargs='+', default=['none'], help='Modes to use for data loading, separated by space')
     parser.add_argument('--text_only', action='store_true', help='Whether use text only setting')
     parser.add_argument('--few_shot', type=str, default=None, help='Whether use few shot setting, option: one-shot, three-shot')
+    parser.add_argument('--domain_aware', action='store_true', help='Whether use domain aware setting')
     parser.add_argument('--output_dir', type=str, default='results', help='Directory to write results')
     parser.add_argument('--infer_limit', type=int, help='Limit the number of inferences per run, default is no limit', default=None)
     parser.add_argument('--num_workers', type=int, default=1, help='Number of concurrent workers for inference')
@@ -154,4 +160,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
     config_wrapper = ConfigWrapper('config/' + args.config)
 
-    main(model_name=args.model_name, prompt_template=args.prompt_template, text_only=args.text_only, few_shot=args.few_shot, output_dir=args.output_dir, infer_limit=args.infer_limit, num_workers=args.num_workers, batch_size=args.batch_size, use_accel=args.use_accel)
+    main(model_name=args.model_name, prompt_template=args.prompt_template, text_only=args.text_only, few_shot=args.few_shot, domain_aware=args.domain_aware, output_dir=args.output_dir, infer_limit=args.infer_limit, num_workers=args.num_workers, batch_size=args.batch_size, use_accel=args.use_accel)

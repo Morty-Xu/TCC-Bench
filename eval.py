@@ -21,9 +21,24 @@ def extract_option_labels(text):
         for char in ["A", "B", "C", "D"]:
             if char in text:
                 return char
+            
     if "\n**答案：" in text:
         # 取\n**答案：后的内容
         text = text.split("\n**答案：")[-1]
+        for char in ["A", "B", "C", "D"]:
+            if char in text:
+                return char
+            
+    if "\nAnswer" in text:
+        # 取\n答案后的内容
+        text = text.split("\nAnswer")[-1]
+        for char in ["A", "B", "C", "D"]:
+            if char in text:
+                return char
+                
+    if "\n**Answer:" in text:
+        # 取\n**答案：后的内容
+        text = text.split("\n**Answer:")[-1]
         for char in ["A", "B", "C", "D"]:
             if char in text:
                 return char
@@ -129,8 +144,8 @@ def evaluate_all_files(output_dir, save_dir):
 
     category_tables = {}
     files = sorted(os.listdir(output_dir))
-    pattern = r'^([a-zA-Z0-9\.-]+)_prompt_([a-zA-Z]+)\.yaml\.jsonl$'
-    
+    pattern = r'^([a-zA-Z0-9.\-_]+)_prompt_([a-zA-Z]+).*\.yaml\.jsonl$'
+
     for file_name in files:
         if file_name.endswith('.jsonl'):
             match = re.match(pattern, file_name)

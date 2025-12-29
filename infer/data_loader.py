@@ -12,24 +12,40 @@ def read_yaml(config='default'):
     
 
 # Load the data
-def load_data(prompt_template='prompt_zh.yaml', file_path='file_path.yaml', few_shot=None):
+def load_data(prompt_template='prompt_zh.yaml', file_path='file_path.yaml', few_shot=None, domain_aware=False):
     template = read_yaml('prompt/' + prompt_template)
     data_path = read_yaml(file_path)
     df = pd.read_csv(data_path['data_path'])
 
     def format_question(row, zh=True):
+
+        domain_name = {
+            'Astronomy': '天文',
+            'Music': '音乐',
+            'Custom': '民俗',
+            'Architecture': '建筑',
+            'Transportation': '交通',
+            'Diet': '饮食',
+            'Clothing': '服装',
+            'Artifact': '器物'
+        }
+
         if zh:
-            prompt_format = [row['Question'], row['A'], row['B'], row['C'], row['D']]
+            if domain_aware:
+                prompt_format = [domain_name[row['Category']], row['Question'], row['A'], row['B'], row['C'], row['D']]
+            else:
+                prompt_format = [row['Question'], row['A'], row['B'], row['C'], row['D']]
         else:
             prompt_format = [row['Question_en'], row['A_en'], row['B_en'], row['C_en'], row['D_en']]
+            
         return template['instruction'] + "\n" + template['prompt_format'][0].format(*prompt_format)
 
     if few_shot is None:
         # Zero-shot
         for _, row in df.iterrows():
-            zh = prompt_template in ['prompt_zh.yaml', 'prompt_CoT.yaml']
+            zh = prompt_template in ['prompt_zh.yaml', 'prompt_CoT.yaml', 'prompt_zh_exp.yaml', 'prompt_zh_domain_aware.yaml']
             question = format_question(row, zh)
-            image_path = data_path['image_root'] + "/" + row['Image']
+            image_path = data_path['image_root'] + "/" + str(row['Image'])
             prompt = {'prompt': question, 'image': [image_path], 'id': row['id']}
             yield prompt, row.to_dict()
     else:
@@ -46,11 +62,10 @@ def load_data(prompt_template='prompt_zh.yaml', file_path='file_path.yaml', few_
             else:
                 shots = []
 
-            # 构造 few-shot 会话
             conversations = []
             all_instances = shots + [sample]
             for turn_id, instance in enumerate(all_instances):
-                zh = prompt_template in ['prompt_zh.yaml', 'prompt_CoT.yaml']
+                zh = prompt_template in ['prompt_zh.yaml', 'prompt_CoT.yaml', 'prompt_zh_exp.yaml']
                 question = format_question(instance, zh)
                 image_path = data_path['image_root'] + "/" + instance['Image']
 
@@ -60,9 +75,8 @@ def load_data(prompt_template='prompt_zh.yaml', file_path='file_path.yaml', few_
                     'id': f"{sample['id']}-turn-{turn_id}"
                 }
 
-                # 如果是 few-shot 样例，添加假设回答
                 if turn_id < len(all_instances) - 1:
-                    prompt_dict["response"] = instance.get("Answer", "A")  # 默认A作为response
+                    prompt_dict["response"] = instance.get("Answer", "A")
                 conversations.append(prompt_dict)
 
             few_shot_prompt = {

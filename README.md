@@ -1,4 +1,4 @@
-# TCC-Bench
+# TCC-Bench: Benchmarking the Traditional Chinese Culture Understanding Capabilities of MLLMs
 
 We present the **T**raditional **C**hinese **C**ulture understanding **Bench**mark, TCC-Bench, a bilingual (*i.e.*, Chinese and English) Visual Question Answering (VQA) benchmark specifically designed to evaluate the capabilities of MLLMs in understanding traditional Chinese culture. We customize eight knowledge domains that encompass key aspects of traditional Chinese culture. Moreover, the images within TCC-Bench are curated from museum artifacts, depictions of everyday life, comics, and other culturally significant materials, ensuring both visual diversity and cultural authenticity. Moreover, we introduce a semi-automated question generation method that reduces manual effort while ensuring the acquisition of high-quality data. Samples from our dataset are shown in the following figure.
 
@@ -20,13 +20,13 @@ conda activate lmdeploy
 pip install lmdeploy
 ```
 
-Then, configure the model settings within `infer/models/__init__.py`, Taking **InternVL2.5-8B** as an example, you can set the following parameters:
+Then, configure the model settings within `infer/models/__init__.py`, Taking **InternVL3.5-8B** as an example, you can set the following parameters:
 
 ```
-'InternVL2.5-8B': {
+'InternVL3.5-8B': {
         'load': ('.lmdeploy_chat', 'load_model'),
         'infer': ('.lmdeploy_chat', 'infer'),
-        'model_path_or_name': '/path/to/InternVL2.5-8B',
+        'model_path_or_name': '/path/to/InternVL3.5-8B',
         'call_type': 'local',
         'tp': 1
     }
@@ -35,7 +35,7 @@ Then, configure the model settings within `infer/models/__init__.py`, Taking **I
 Run the command below to infer:
 
 ```
-python infer/infer.py --prompt_template prompt_zh.yaml --model_name InternVL2_5-8B --output_dir results_tcc --batch_size 1 --use_accel
+python infer/infer.py --prompt_template prompt_zh.yaml --model_name InternVL3.5-8B --output_dir results_tcc --batch_size 1 --use_accel
 ```
 
 ### Evaluation

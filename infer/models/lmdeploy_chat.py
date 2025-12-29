@@ -45,18 +45,32 @@ def infer(prompts, text_only, **kwargs):
         if "conversations" in prompt:  # few-shot setting
             for idx, data in enumerate(prompt["conversations"]):
                content = []
-               content.append(dict(type='text', text=data["prompt"]))
+               text = data['prompt']
+               if 'deepseek' in (model_name or '').lower():
+                   text = f'{IMAGE_TOKEN}' + data['prompt']
+               content.append(dict(type='text', text=text))
 
                if not text_only:
-                    for image_path in data.get("image", []):
-                        base64_image = encode_image_base64(image_path)
-                        content.append({
-                            "type": "image_url",
-                            "image_url": {
-                                "url": base64_image,
-                                "detail": "low"
-                            }
-                        })
+                    if 'deepseek' in (model_name or '').lower():
+                        for image_path in data.get("image", []):
+                            base64_image = encode_image_base64(image_path)
+                            content.append({
+                                "type": "image",
+                                "image": {
+                                    "url": base64_image,
+                                    "detail": "low"
+                                }
+                            })
+                    else:
+                        for image_path in data.get("image", []):
+                            base64_image = encode_image_base64(image_path)
+                            content.append({
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": base64_image,
+                                    "detail": "low"
+                                }
+                            })
 
                messages.append(dict(role='user', content=content))
 
@@ -67,7 +81,7 @@ def infer(prompts, text_only, **kwargs):
             # Zero-shot
             content = []
             text = prompt['prompt']
-            if 'Deepseek' in model_name:
+            if 'deepseek' in (model_name or '').lower():
                 text = f'{IMAGE_TOKEN}' + prompt['prompt']
             content.append(dict(type='text', text=text))
             if not text_only:
@@ -86,7 +100,6 @@ def infer(prompts, text_only, **kwargs):
             out = model(messages, gen_config=gen_config)
             responses.append(out.text)
         else:
-            # fallback（根据需求添加）
             responses.append("")
 
     return responses
