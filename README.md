@@ -6,7 +6,7 @@ We present the **T**raditional **C**hinese **C**ulture understanding **Bench**ma
 
 ## Dataset Availability
 
-The dataset is available at [Google Drive](https://drive.google.com/file/d/1EbjSu_pTMQuIG7wqYZIQC5Y66DCClQdR/view?usp=sharinghttps:/).
+The dataset is available at [Google Drive](https://drive.google.com/file/d/1AWfU9ViuZeKJf9mAD0am8Zh7tdjQVgQI/view?usp=drive_link).
 
 ## How to Run
 
